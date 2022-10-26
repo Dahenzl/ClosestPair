@@ -20,7 +20,7 @@ import java.util.Random;
  */
 public class ParCercano {
     static Random ran = new Random();
-    static float minDist = 9999999;
+    static double minDist = Double.POSITIVE_INFINITY;
     static Node FirstNode;
     static Node SecondNode;
 
@@ -32,6 +32,8 @@ public class ParCercano {
         parCercanoRecursivo(Nodos); //Start of the recursive process.
         print(Nodos); //Print in console the results of the program
     }
+    
+    public static void parCercanoRecursivo(ArrayList<Node> listaN)
     /*
     Function that finds the closest pair of nodes in an array.
     Input:
@@ -41,15 +43,17 @@ public class ParCercano {
     FirstNode - The first node of the closest pair in the array.
     SecondNode - The second node of the closest pair in the array.
     */
-    public static void parCercanoRecursivo(ArrayList<Node> listaN){
+    {
         if (listaN.size() <= 3){
-            brute(listaN); //Find the minimum distance of the subdivision of the list to analyze when it's size is less than 4.
+            brute(listaN); //Find the minimum distance of the subdivision of the list to analyze when it's size is equal or less than 3.
         }else{
             parCercanoRecursivo(divide(listaN, 0)); //Call the recursive function with the first half of the array.
             parCercanoRecursivo(divide(listaN, 1)); //Call the recursive function with the second half of the array.
             middle(listaN); //Create the middle of the array and find its minium distance.
         }   
     }
+    
+    public static ArrayList<Node> createNodes(int N, int ranX, int ranY)
     /*
     Function that create the array of nodes.
     Inputs: 
@@ -59,7 +63,7 @@ public class ParCercano {
     Output:
     Nodes - Principal array of nodes.
     */
-    public static ArrayList<Node> createNodes(int N, int ranX, int ranY){
+    {
         ArrayList<Node> Nodes = new ArrayList<Node>();
         for (int i = 0; i < N; i++) {
             int x = ran.nextInt(ranX);
@@ -77,7 +81,8 @@ public class ParCercano {
 
         return Nodes; 
     }
-    
+       
+    public static void brute(ArrayList<Node> listaN)
     /*
     Function that finds the minimun distance between two nodes of an array.
     Inputs:
@@ -86,8 +91,8 @@ public class ParCercano {
     dist - The minimun distance between two nodes of the array.
     nodeA - The first node of the closest pair in the array.
     nodeB - The second node of the closest pair in the array.
-    */    
-    public static void brute(ArrayList<Node> listaN){
+    */ 
+    {
         //Calculate the distance between each pair of nodes in the array to find the minimun distance and the two closest nodes.
         for (int j = 0; j < listaN.size()-1; j++) {
             for (int k = j+1; k < listaN.size(); k++) {
@@ -95,7 +100,7 @@ public class ParCercano {
                 Node nodeB = listaN.get(k);
                 int distX = nodeB.x - nodeA.x;
                 int distY = nodeB.y - nodeA.y;
-                float dist = (float)Math.sqrt(distX*distX + distY*distY);
+                double dist = (double)Math.sqrt(distX*distX + distY*distY);
                 
                 //Check if the distance between the two nodes is less than the minimun distance and refresh the data.
                 if (dist < minDist){
@@ -107,6 +112,7 @@ public class ParCercano {
         }
     }
     
+    public static ArrayList<Node> divide(ArrayList<Node> list, int Half)
     /*
     Function that divides an array of nodes in two halfs.
     Inputs:
@@ -115,7 +121,7 @@ public class ParCercano {
     Outputs:
     halfList - A half of the original array, the first half if Half is 0 and the second half if Half is 1.
     */
-    public static ArrayList<Node> divide(ArrayList<Node> list, int Half){
+    {
         ArrayList<Node> halfList = new ArrayList<Node>();
         
         //Determine wich half of the array is going to return the function depending on the int Half.
@@ -131,6 +137,7 @@ public class ParCercano {
         return halfList; 
     }
     
+    public static void middle(ArrayList<Node> listaN)
     /*
     Function that create the middle array of the given array.
     Inputs:
@@ -138,7 +145,7 @@ public class ParCercano {
     Outputs:
     Middle - The middle of the given array depending on the minimun distance.
     */
-    public static void middle(ArrayList<Node> listaN){
+    {
         ArrayList<Node> Middle = new ArrayList<Node>();
         double middle = (listaN.get(listaN.size()/2-1).x + listaN.get(listaN.size()/2).x)/2;
         double firstMiddle = middle - minDist;
@@ -154,6 +161,7 @@ public class ParCercano {
         brute(Middle); //Perform the brute function with the middle array.
     }    
     
+    public static void print(ArrayList<Node> listaN)
     /*
     Function that prints the results of the recursive function and compares it with the brute function.
     Inputs:
@@ -162,7 +170,7 @@ public class ParCercano {
     Prints in console the minimun distance and the closest pair of nodes of the array, showing first the results of the recursive function and them
     the results of putting thw whole array in the brute function.
     */
-    public static void print(ArrayList<Node> listaN){
+    {
         //Print the list of nodes in the array.
         System.out.println("Nombre - X - Y");
         for (int j = 0; j < listaN.size(); j++) {
