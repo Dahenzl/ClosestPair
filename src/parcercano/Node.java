@@ -8,10 +8,10 @@ package parcercano;
  *
  * @author ddhenriquez
  */
-public class Node {
+public final class Node {
     int name;
-    int x;
-    int y;
+    final int x;
+    final int y;
     
     public Node(int x, int y){
         this.x = x;
