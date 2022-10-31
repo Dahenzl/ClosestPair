@@ -1,36 +1,103 @@
 package parcercano;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-/**
- * Algoritmos y Complejidad IST 4310
+/* Algoritmos y Complejidad IST 4310
  * NRC: 3265
  * Name: David Daniel Henriquez Leal
  * Student code: 200157506
- * Date: 26/10/2022
+ * Date: 02/11/2022
  * 
  * WorkShop: Closest Pair
- * In this workshop I created a proyect that is able to find the closest pair of nodes in two diferent ways, using the brute force and
- * by divide and conquer, this also works as a check that the program is doing a good job.
- * 
+ * In this workshop I created a proyect that is able to find the closest pair of nodes in two diferent ways, using the brute force and by divide and conquer.
+ * To them write the number of iterations and the time it took to both method to complete the same task, so them we can compare it and make an analysis and comparisons between both methods.
+ *
  * References:
  * https://www.geeksforgeeks.org/arrays-sort-in-java-with-examples/
  */
+
 public class ParCercano {
     static Random ran = new Random();
-    static double minDist = Double.POSITIVE_INFINITY;
+    static double minDist ;
     static Node FirstNode;
     static Node SecondNode;
+    static PrintWriter outDivide;
+    static PrintWriter outBrute;
+    static long iteraciones, inicio, fin;
 
-    public static void main(String[] args) {
-        int N = 6; //Set the size of the array of nodes.
-        int x = 10; //Set the limit of the random function in x.
-        int y = 5; //Set the limit of the random function in y.
-        ArrayList<Node> Nodos = createNodes(N, x, y); //Creation of the nodes.
-        parCercanoRecursivo(Nodos); //Start of the recursive process.
-        print(Nodos); //Print in console the results of the program
+    public static void main(String[] args) throws FileNotFoundException {
+        outDivide = new PrintWriter ("resultsDivide.txt");
+        outBrute = new PrintWriter ("resultsBrute.txt");
+        
+        int N = 4; //Set the size of the array of nodes.
+        int x = 8; //Set the limit of the random function in x.
+        int y = 2; //Set the limit of the random function in y.
+        
+        create("resultsBrute.txt"); //Creates the file with the results from the brute method.
+        create("resultsDivide.txt"); //Creates the file with the results from the divide and conquer method.
+        
+        for (int i = 0; i < 16; i++) {
+            minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance
+            iteraciones = 0; //Resets the iterations counter.
+            N = N * 2; //Duplicate the size of the array of nodes.
+            x = x * 2; //Duplicate the random limit of x.
+            y = y * 2; //Duplicate the random limit of y.
+            ArrayList<Node> Nodos = createNodes(N, x, y); //Creation of the nodes.
+            inicio = System.nanoTime(); // Takes the exact time in wich the main loop started.
+            parCercanoRecursivo(Nodos); //Start of the recursive process.
+            fin = System.nanoTime(); // Takes the exact time in wich the main loop started.
+            writeResults(N, iteraciones, fin, inicio, 1); //Writes on the divide and conquer results file.
+            print(Nodos); //Print in console the results of the program.
+            writeResults(N, iteraciones, fin, inicio, 2); //Writes on the brute results file.
+        }
+        
+        outDivide.close();
+        outBrute.close();
+    }
+    
+    private static void create (String name)
+    /*
+    Function that creates a file with the given names.
+    Input:
+    name - The name we want to give to the file.
+    Output:
+    A text file with the given name.
+    */
+    {
+        try{
+            String fname = (name); 
+            File f = new File (fname); 
+            f.createNewFile(); 
+        }catch (IOException err){
+            err.printStackTrace(); //Complains if there is an Input/Output Error.
+        }
+    }
+    
+    private static void writeResults(int N, long iterations, long end, long start, int cond) throws FileNotFoundException
+    /*
+    Function that write the data collected from both the brute and divide-conquer method of finding the closest pair.
+    Input:
+    N - the size of the array of nodes.
+    iterations - the number of iterations it take to the method to complete the task.
+    end - The exact moment the method ended.
+    start - The exact moment the method started.
+    cond - A condition that determines in which file the data is going to be written.
+    Output:
+    Writes the given data in the results files.
+    */
+    {
+        //Determine in which file the data is going to be written.
+        if(cond == 1){
+            outDivide.printf("%s\n", N + " " + iterations + " " + (end-start));
+        } else{
+            outBrute.printf("%s\n", N + " " + iterations + " " + (end-start));
+        }
     }
     
     public static void parCercanoRecursivo(ArrayList<Node> listaN)
@@ -64,6 +131,7 @@ public class ParCercano {
     Nodes - Principal array of nodes.
     */
     {
+        //Create the array of nodes.
         ArrayList<Node> Nodes = new ArrayList<Node>();
         for (int i = 0; i < N; i++) {
             int x = ran.nextInt(ranX);
@@ -96,6 +164,7 @@ public class ParCercano {
         //Calculate the distance between each pair of nodes in the array to find the minimun distance and the two closest nodes.
         for (int j = 0; j < listaN.size()-1; j++) {
             for (int k = j+1; k < listaN.size(); k++) {
+                iteraciones ++; //Update the iterations counter
                 Node nodeA = listaN.get(j);
                 Node nodeB = listaN.get(k);
                 int distX = nodeB.x - nodeA.x;
@@ -182,7 +251,11 @@ public class ParCercano {
         System.out.println("\n" + "Resultados divide and conquer; ");
         System.out.println("Distancia: " + minDist + " - Primer nodo: " + FirstNode.name + " - Segundo Nodo: " + SecondNode.name + "\n");
         
-        brute(listaN); //Performs the brute function the whole array.
+        minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance
+        iteraciones  = 0; //Resets the iterations counter.
+        inicio = System.nanoTime(); //Takes the exact time in wich the brute method started.
+        brute(listaN); //Performs the brute function to the whole array.
+        fin = System.nanoTime(); //Takes the exact time in wich the brute method started.
 
         //Prints the results of putting the whole array in the brute function.
         System.out.println("Resultados bruto; ");
