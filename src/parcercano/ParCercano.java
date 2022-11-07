@@ -35,9 +35,9 @@ public class ParCercano {
         outDivide = new PrintWriter ("resultsDivide.txt");
         outBrute = new PrintWriter ("resultsBrute.txt");
         
-        int N = 4; //Set the size of the array of nodes.
-        int x = 8; //Set the limit of the random function in x.
-        int y = 2; //Set the limit of the random function in y.
+        int N = 32; //Set the size of the array of nodes.
+        int x = 64; //Set the limit of the random function in x.
+        int y = 16; //Set the limit of the random function in y.
         
         create("resultsBrute.txt"); //Creates the file with the results from the brute method.
         create("resultsDivide.txt"); //Creates the file with the results from the divide and conquer method.
@@ -45,16 +45,16 @@ public class ParCercano {
         for (int i = 0; i < 16; i++) {
             minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance
             iteraciones = 0; //Resets the iterations counter.
-            N = N * 2; //Duplicate the size of the array of nodes.
-            x = x * 2; //Duplicate the random limit of x.
-            y = y * 2; //Duplicate the random limit of y.
             ArrayList<Node> Nodos = createNodes(N, x, y); //Creation of the nodes.
             inicio = System.nanoTime(); // Takes the exact time in wich the main loop started.
             parCercanoRecursivo(Nodos); //Start of the recursive process.
             fin = System.nanoTime(); // Takes the exact time in wich the main loop started.
             writeResults(N, iteraciones, fin, inicio, 1); //Writes on the divide and conquer results file.
-            print(Nodos); //Print in console the results of the program.
+            printAndBrute(Nodos); //Print in console the results of the program.
             writeResults(N, iteraciones, fin, inicio, 2); //Writes on the brute results file.
+            N = N * 2; //Duplicate the size of the array of nodes.
+            x = x * 2; //Duplicate the random limit of x.
+            y = y * 2; //Duplicate the random limit of y.
         }
         
         outDivide.close();
@@ -167,10 +167,10 @@ public class ParCercano {
                 iteraciones ++; //Update the iterations counter
                 Node nodeA = listaN.get(j);
                 Node nodeB = listaN.get(k);
-                int distX = nodeB.x - nodeA.x;
-                int distY = nodeB.y - nodeA.y;
-                double dist = (double)Math.sqrt(distX*distX + distY*distY);
-                
+                double distX = nodeB.x - nodeA.x;
+                double distY = nodeB.y - nodeA.y;
+                double dist = (distX*distX) + (distY*distY);
+               
                 //Check if the distance between the two nodes is less than the minimun distance and refresh the data.
                 if (dist < minDist){
                     FirstNode = nodeA;
@@ -217,8 +217,8 @@ public class ParCercano {
     {
         ArrayList<Node> Middle = new ArrayList<Node>();
         double middle = (listaN.get(listaN.size()/2-1).x + listaN.get(listaN.size()/2).x)/2;
-        double firstMiddle = middle - minDist;
-        double secondMiddle = middle + minDist;
+        double firstMiddle = middle - Math.sqrt(minDist);
+        double secondMiddle = middle + Math.sqrt(minDist);
         
         //Creates the middle array depending on the range determinated by firstMiddle and secondMiddle.
         for (int j = 0; j < listaN.size(); j++) {
@@ -230,26 +230,19 @@ public class ParCercano {
         brute(Middle); //Perform the brute function with the middle array.
     }    
     
-    public static void print(ArrayList<Node> listaN)
+    public static void printAndBrute(ArrayList<Node> listaN)
     /*
     Function that prints the results of the recursive function and compares it with the brute function.
     Inputs:
-    listaN - The array from which we want to print the collected data.
+    listaN - The array from which we want to print the collected data and realize the brute function.
     Outputs:
     Prints in console the minimun distance and the closest pair of nodes of the array, showing first the results of the recursive function and them
     the results of putting thw whole array in the brute function.
     */
-    {
-        //Print the list of nodes in the array.
-        System.out.println("Nombre - X - Y");
-        for (int j = 0; j < listaN.size(); j++) {
-            Node nodo = listaN.get(j);
-            System.out.println("  " + nodo.name + "      " + nodo.x + "  " + nodo.y);
-        }
-        
+    {        
         //Prints the results of the recursive function.
         System.out.println("\n" + "Resultados divide and conquer; ");
-        System.out.println("Distancia: " + minDist + " - Primer nodo: " + FirstNode.name + " - Segundo Nodo: " + SecondNode.name + "\n");
+        System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: " + FirstNode.name + " - Segundo Nodo: " + SecondNode.name + "\n");
         
         minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance
         iteraciones  = 0; //Resets the iterations counter.
@@ -258,7 +251,7 @@ public class ParCercano {
         fin = System.nanoTime(); //Takes the exact time in wich the brute method started.
 
         //Prints the results of putting the whole array in the brute function.
-        System.out.println("Resultados bruto; ");
-        System.out.println("Distancia: " + minDist + " - Primer nodo: " + FirstNode.name + " - Segundo nodo: " + SecondNode.name);
+        System.out.println("Resultados brute; ");
+        System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: " + FirstNode.name + " - Segundo nodo: " + SecondNode.name);
     }   
 }
