@@ -43,7 +43,7 @@ public class ParCercano {
         create("resultsDivide.txt"); //Creates the file with the results from the divide and conquer method.
         
         for (int i = 0; i < 16; i++) {
-            minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance
+            minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance.
             iteraciones = 0; //Resets the iterations counter.
             ArrayList<Node> Nodos = createNodes(N, x, y); //Creation of the nodes.
             inicio = System.nanoTime(); // Takes the exact time in wich the main loop started.
@@ -102,13 +102,13 @@ public class ParCercano {
     
     public static void parCercanoRecursivo(ArrayList<Node> listaN)
     /*
-    Function that finds the closest pair of nodes in an array.
+    Recursive function that finds the closest pair of nodes in an array by using the divide and conquer method.
     Input:
     listaN - The array from which we want to find the closest pair.
     Outputs:
-    minDist - The minimun distance between two nodes of the array.
-    FirstNode - The first node of the closest pair in the array.
-    SecondNode - The second node of the closest pair in the array.
+    minDist - The minimun distance between two nodes of the array finded by using divide and conquer method.
+    FirstNode - The first node of the closest pair in the array finded by using divide and conquer method.
+    SecondNode - The second node of the closest pair in the array finded by using divide and conquer method.
     */
     {
         if (listaN.size() <= 3){
@@ -140,9 +140,9 @@ public class ParCercano {
             Nodes.add(n);
         }
         
-        Collections.sort(Nodes, new SortByXandY()); //Calls a function that sorts the array
+        Collections.sort(Nodes, new SortByXandY()); //Calls a function that sorts the array.
         
-        //Give names to each node
+        //Give names to each node.
         for (int i = 0; i < N; i++) {
             Nodes.get(i).setName(i);
         }
@@ -164,7 +164,7 @@ public class ParCercano {
         //Calculate the distance between each pair of nodes in the array to find the minimun distance and the two closest nodes.
         for (int j = 0; j < listaN.size()-1; j++) {
             for (int k = j+1; k < listaN.size(); k++) {
-                iteraciones ++; //Update the iterations counter
+                iteraciones ++; //Update the iterations counter.
                 Node nodeA = listaN.get(j);
                 Node nodeB = listaN.get(k);
                 double distX = nodeB.x - nodeA.x;
@@ -232,10 +232,13 @@ public class ParCercano {
     
     public static void printAndBrute(ArrayList<Node> listaN)
     /*
-    Function that prints the results of the recursive function and compares it with the brute function.
+    Function that prints the results of the recursive function, performs the brute force method, and prints its results for comparison.
     Inputs:
-    listaN - The array from which we want to print the collected data and realize the brute function.
+    listaN - The array from which we want to print the collected data and perform the brute function.
     Outputs:
+    minDist - The minimun distance between two nodes of the array finded by using the brute force method.
+    FirstNode - The first node of the closest pair in the array finded by using the brute force method.
+    SecondNode - The second node of the closest pair in the array finded by using the brute force method.
     Prints in console the minimun distance and the closest pair of nodes of the array, showing first the results of the recursive function and them
     the results of putting thw whole array in the brute function.
     */
@@ -244,13 +247,13 @@ public class ParCercano {
         System.out.println("\n" + "Resultados divide and conquer; ");
         System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: " + FirstNode.name + " - Segundo Nodo: " + SecondNode.name + "\n");
         
-        minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance
+        minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance.
         iteraciones  = 0; //Resets the iterations counter.
-        inicio = System.nanoTime(); //Takes the exact time in wich the brute method started.
+        inicio = System.nanoTime(); //Takes the exact time in wich the brute force method started.
         brute(listaN); //Performs the brute function to the whole array.
-        fin = System.nanoTime(); //Takes the exact time in wich the brute method started.
+        fin = System.nanoTime(); //Takes the exact time in wich the brute force method started.
 
-        //Prints the results of putting the whole array in the brute function.
+        //Prints the results of putting the whole array in the brute force method.
         System.out.println("Resultados brute; ");
         System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: " + FirstNode.name + " - Segundo nodo: " + SecondNode.name);
     }   
