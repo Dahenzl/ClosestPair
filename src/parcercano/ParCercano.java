@@ -24,37 +24,40 @@ import java.util.Random;
 
 public class ParCercano {
     static Random ran = new Random();
-    static double minDist ;
-    static Node FirstNode;
-    static Node SecondNode;
-    static PrintWriter outDivide;
-    static PrintWriter outBrute;
-    static long iteraciones, inicio, fin;
+    private static double minDist ;
+    private static Node FirstNode;
+    private static Node SecondNode;
+    private static long iteraciones, inicio, fin;
 
     public static void main(String[] args) throws FileNotFoundException {
-        outDivide = new PrintWriter ("resultsDivide.txt");
-        outBrute = new PrintWriter ("resultsBrute.txt");
+        long DivideTimes[] = new long[6];
+        ArrayList<Node> Nodos = new ArrayList<Node>();
+        PrintWriter outDivide = new PrintWriter ("resultsDivide.txt");
+        PrintWriter outBrute = new PrintWriter ("resultsBrute.txt");
         
         int N = 32; //Set the size of the array of nodes.
         int x = 64; //Set the limit of the random function in x.
-        int y = 16; //Set the limit of the random function in y.
+        int y = 8; //Set the limit of the random function in y.
         
         create("resultsBrute.txt"); //Creates the file with the results from the brute method.
         create("resultsDivide.txt"); //Creates the file with the results from the divide and conquer method.
         
         for (int i = 0; i < 16; i++) {
-            minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance.
             iteraciones = 0; //Resets the iterations counter.
-            ArrayList<Node> Nodos = createNodes(N, x, y); //Creation of the nodes.
-            inicio = System.nanoTime(); // Takes the exact time in wich the main loop started.
-            parCercanoRecursivo(Nodos); //Start of the recursive process.
-            fin = System.nanoTime(); // Takes the exact time in wich the main loop started.
-            writeResults(N, iteraciones, fin, inicio, 1); //Writes on the divide and conquer results file.
-            printAndBrute(Nodos); //Print in console the results of the program.
-            writeResults(N, iteraciones, fin, inicio, 2); //Writes on the brute results file.
+            //Perform 6 tests with the same N to then calculate the average of the times and the iterations.
+            for (int j = 0; j < 6; j++) {
+                minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance.
+                Nodos = createNodes(N, x, y); //Creation of the nodes.
+                inicio = System.nanoTime(); // Takes the exact time in wich the divide and conquer method started.
+                parCercanoRecursivo(Nodos); //Start of the recursive process.
+                fin = System.nanoTime(); // Takes the exact time in wich the divide and conquer method started.
+                DivideTimes[j] = fin - inicio; // Save the ejecution times in an array.
+            }
+            writeResults(N, iteraciones/6, Average(DivideTimes), outDivide); //Writes on the divide and conquer results file.
+            //printAndBrute(Nodos); //Print in console the results of the program.
+            //writeResults(N, iteraciones, fin - inicio, outBrute); //Writes on the brute results file.
             N = N * 2; //Duplicate the size of the array of nodes.
             x = x * 2; //Duplicate the random limit of x.
-            y = y * 2; //Duplicate the random limit of y.
         }
         
         outDivide.close();
@@ -79,7 +82,7 @@ public class ParCercano {
         }
     }
     
-    private static void writeResults(int N, long iterations, long end, long start, int cond) throws FileNotFoundException
+    private static void writeResults(int N, long iterations, long time, PrintWriter writer) throws FileNotFoundException
     /*
     Function that write the data collected from both the brute and divide-conquer method of finding the closest pair.
     Input:
@@ -87,17 +90,12 @@ public class ParCercano {
     iterations - the number of iterations it take to the method to complete the task.
     end - The exact moment the method ended.
     start - The exact moment the method started.
-    cond - A condition that determines in which file the data is going to be written.
+    writer - The printwriter of the file we want to update.
     Output:
     Writes the given data in the results files.
     */
     {
-        //Determine in which file the data is going to be written.
-        if(cond == 1){
-            outDivide.printf("%s\n", N + " " + iterations + " " + (end-start));
-        } else{
-            outBrute.printf("%s\n", N + " " + iterations + " " + (end-start));
-        }
+         writer.printf("%s\n", N + " " + iterations + " " + time);
     }
     
     public static void parCercanoRecursivo(ArrayList<Node> listaN)
@@ -256,5 +254,23 @@ public class ParCercano {
         //Prints the results of putting the whole array in the brute force method.
         System.out.println("Resultados brute; ");
         System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: " + FirstNode.name + " - Segundo nodo: " + SecondNode.name);
-    }   
+    }  
+    
+    public static long Average(long Times[])
+    /*
+    Function that returns the average of an array.
+    Inputs:
+    Times[] - The array from which we want to calculate the average.
+    Outputs:
+    average - The average of the array elements.      
+    */
+    {
+        long sum = 0;
+        //Calculate the average of the array.
+        for (int i = 0; i < Times.length; i++) {
+            sum += Times[i];
+        }
+        long average = sum/Times.length;
+        return average;
+    }
 }
