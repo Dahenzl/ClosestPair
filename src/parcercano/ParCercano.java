@@ -35,8 +35,8 @@ public class ParCercano {
         PrintWriter outDivide = new PrintWriter ("resultsDivide.txt");
         PrintWriter outBrute = new PrintWriter ("resultsBrute.txt");
         
-        int N = 32; //Set the size of the array of nodes.
-        int x = 64; //Set the limit of the random function in x.
+        int N = 8; //Set the size of the array of nodes.
+        int x = 16; //Set the limit of the random function in x.
         int y = 8; //Set the limit of the random function in y.
         
         create("resultsBrute.txt"); //Creates the file with the results from the brute method.
@@ -47,15 +47,15 @@ public class ParCercano {
             //Perform 6 tests with the same N to then calculate the average of the times and the iterations.
             for (int j = 0; j < 6; j++) {
                 minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance.
-                Nodos = createNodes(N, x, y); //Creation of the nodes.
-                inicio = System.nanoTime(); // Takes the exact time in wich the divide and conquer method started.
+                Nodos = createNodes(N, x, y); //Create the array of nodes.
+                inicio = System.nanoTime(); //Takes the exact time in wich the divide and conquer method started.
                 parCercanoRecursivo(Nodos); //Start of the recursive process.
-                fin = System.nanoTime(); // Takes the exact time in wich the divide and conquer method started.
-                DivideTimes[j] = fin - inicio; // Save the ejecution times in an array.
+                fin = System.nanoTime(); //Takes the exact time in wich the divide and conquer method started.
+                DivideTimes[j] = fin - inicio; //Save the ejecution times in an array.
             }
             writeResults(N, iteraciones/6, Average(DivideTimes), outDivide); //Writes on the divide and conquer results file.
-            //printAndBrute(Nodos); //Print in console the results of the program.
-            //writeResults(N, iteraciones, fin - inicio, outBrute); //Writes on the brute results file.
+            printAndBrute(Nodos); //Print in console the results of the program.
+            writeResults(N, iteraciones, fin - inicio, outBrute); //Writes on the brute force results file.
             N = N * 2; //Duplicate the size of the array of nodes.
             x = x * 2; //Duplicate the random limit of x.
         }
@@ -84,7 +84,7 @@ public class ParCercano {
     
     private static void writeResults(int N, long iterations, long time, PrintWriter writer) throws FileNotFoundException
     /*
-    Function that write the data collected from both the brute and divide-conquer method of finding the closest pair.
+    Function that write the data collected from both the brute force and divide-conquer method of finding the closest pair.
     Input:
     N - the size of the array of nodes.
     iterations - the number of iterations it take to the method to complete the task.
