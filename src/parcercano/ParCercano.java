@@ -35,8 +35,8 @@ public class ParCercano {
         PrintWriter outDivide = new PrintWriter ("resultsDivide.txt");
         PrintWriter outBrute = new PrintWriter ("resultsBrute.txt");
         
-        int N = 8; //Set the size of the array of nodes.
-        int x = 16; //Set the limit of the random function in x.
+        int N = 32; //Set the size of the array of nodes.
+        int x = 64; //Set the limit of the random function in x.
         int y = 8; //Set the limit of the random function in y.
         
         create("resultsBrute.txt"); //Creates the file with the results from the brute method.
