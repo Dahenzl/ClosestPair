@@ -9,16 +9,11 @@ package parcercano;
  * @author ddhenriquez
  */
 public final class Node {
-    int name;
     final int x;
     final int y;
     
     public Node(int x, int y){
         this.x = x;
         this.y = y;
-    }
-    
-    public void setName(int name){
-        this.name = name;
     }
 }
