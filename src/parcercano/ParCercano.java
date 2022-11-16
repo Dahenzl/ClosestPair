@@ -12,7 +12,7 @@ import java.util.Random;
  * NRC: 3265
  * Name: David Daniel Henriquez Leal
  * Student code: 200157506
- * Date: 02/11/2022
+ * Date: 16/11/2022
  * 
  * WorkShop: Closest Pair
  * In this workshop I created a proyect that is able to find the closest pair of nodes in two diferent ways, using the brute force and by divide and conquer.
@@ -139,11 +139,6 @@ public class ParCercano {
         }
         
         Collections.sort(Nodes, new SortByXandY()); //Calls a function that sorts the array.
-        
-        //Give names to each node.
-        for (int i = 0; i < N; i++) {
-            Nodes.get(i).setName(i);
-        }
 
         return Nodes; 
     }
@@ -243,7 +238,7 @@ public class ParCercano {
     {        
         //Prints the results of the recursive function.
         System.out.println("\n" + "Resultados divide and conquer; ");
-        System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: " + FirstNode.name + " - Segundo Nodo: " + SecondNode.name + "\n");
+        System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: (" + FirstNode.x + "," + FirstNode.y + ") - Segundo nodo: (" + SecondNode.x + "," + SecondNode.y + ")");
         
         minDist = Double.POSITIVE_INFINITY; //Resets the minimun distance.
         iteraciones  = 0; //Resets the iterations counter.
@@ -253,7 +248,7 @@ public class ParCercano {
 
         //Prints the results of putting the whole array in the brute force method.
         System.out.println("Resultados brute; ");
-        System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: " + FirstNode.name + " - Segundo nodo: " + SecondNode.name);
+        System.out.println("Distancia: " + Math.sqrt(minDist) + " - Primer nodo: (" + FirstNode.x + "," + FirstNode.y + ") - Segundo nodo: (" + SecondNode.x + "," + SecondNode.y + ")");
     }  
     
     public static long Average(long Times[])
