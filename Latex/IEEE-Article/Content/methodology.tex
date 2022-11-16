@@ -1,0 +1,40 @@
+\section{Metodologia}
+Para llevar a cabo este programa, primero diseñamos un algoritmo para realizar la búsqueda del par más cercano por medio de la tecnica de fuerza bruta y posteriormente diseñamos un algoritmo recursivo que usa la tecnica de “divide y vencerás” que realiza la misma función que el método anterior.
+\begin{algorithm}[H]	
+\caption{FuerzaBruta}	
+\begin{algorithmic}
+\FOR{i = 1, Lista.size - 1}
+\FOR{j = 1, Lista.size - 1}
+\STATE NodoA = Lista.get(i)
+\STATE NodoB = Lista.get(j)
+\STATE distX = NodoB.x - NodoA.x
+\STATE distY = NodoB.y - NodoA.y
+\STATE dist = distX * distX + distY * distY
+\IF{dist $<$ DistanciaMinima}
+\STATE PrimerNodo = NodoA
+\STATE SegundoNodo = NodoB
+\STATE DistanciaMinima = dist
+\ENDIF
+\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\label{algo:factorial}	
+\end{algorithm}
+
+\begin{algorithm}[H]	
+\caption{DivideYVenceras}	
+\begin{algorithmic}
+\IF{Lista.size $<=$ 3}
+\STATE FuerzaBruta(Lista)
+\ELSE
+\STATE DivideYVenceras(Primera mitad de la lista)
+\STATE DivideYVenceras(Segunda mitad de la lista)
+\STATE FuerzaBruta(Medio de la lista)
+\ENDIF
+\end{algorithmic}
+\label{algo:factorial}	
+\end{algorithm}
+
+Posteriormente implementamos estos algoritmos en un programa en java y además le agregamos la funcionalidad de contar el número de iteraciones que le toma a cada uno de los métodos realizar su función y el tiempo de ejecución requerido para este. Para la tecnica de divide y venceras el tiempo de ejecución y las iteraciones son calculados a partir del promedio de  6 ejecuciones con el mismo valor de N, pues los resultados son variables dependiendo de los datos y es adecuado realizar este promedio para que los resultados mas precisos.
+
+Por último, con todas las funcionalidades ya implementadas, realizamos pruebas utilizando puntos con coordenadas iguales en ambos métodos, guardamos los datos y repetimos el proceso aumentando el tamaño N para visualizar el comportamiento de estas metodologías cuando N tiende a infinito.
